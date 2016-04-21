@@ -1,0 +1,53 @@
+#!/usr/bin/env node
+var knex = require('knex')({
+  client: 'sqlite3',
+  connection: {
+    filename: __dirname + '/dev.sqlite3'
+  },
+  useNullAsDefault: true
+})
+
+var cmd = process.argv[2]
+var note = process.argv[3]
+
+switch (cmd) {
+  case 'add':
+    addTweet(note)
+      .then(getAll)
+      .then(listTweet)
+      .catch(logError)
+      .finally(closeDB)
+    break
+
+  case 'list':
+    getAll()
+      .then(listTweet)
+      .catch(logError)
+      .finally(closeDB)
+    break
+
+   default:
+    console.log('no matched cases')
+    closeDB()
+    break
+}
+
+function listTweet (tweet) {
+  tweet.forEach(function (tweet) { console.log(tweet.id, tweet.tweet) })
+}
+
+function logError (err) {
+  console.log('looks like shes dead jim: ', err)
+}
+function getAll () {
+  return knex.raw('select * from "name" "tweet"')
+}
+
+function addTweet (tweet) {
+  return knex.raw('insert into "tweet" ("tweet") values ("' + tweet + '" );')
+}
+
+
+function closeDB () {
+  knex.destroy()
+}
