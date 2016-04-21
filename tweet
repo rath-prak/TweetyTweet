@@ -11,13 +11,21 @@ var cmd = process.argv[2]
 var note = process.argv[3]
 
 switch (cmd) {
-  case 'add':
+  case 'addTweet':
     addTweet(note)
       .then(getAll)
       .then(listTweet)
       .catch(logError)
       .finally(closeDB)
     break
+
+    case 'addName':
+      addName(note)
+        .then(getAll)
+        .then(listTweet)
+        .catch(logError)
+        .finally(closeDB)
+      break
 
   case 'list':
     getAll()
@@ -33,20 +41,23 @@ switch (cmd) {
 }
 
 function listTweet (tweet) {
-  tweet.forEach(function (tweet) { console.log(tweet.id, tweet.tweet) })
+  tweet.forEach(function (tweet) { console.log(tweet.id, tweet.name, tweet.tweet) })
 }
 
 function logError (err) {
   console.log('looks like shes dead jim: ', err)
 }
 function getAll () {
-  return knex.raw('select * from "name" "tweet"')
+  return knex.raw('select * from "tweet"')
 }
 
 function addTweet (tweet) {
   return knex.raw('insert into "tweet" ("tweet") values ("' + tweet + '" );')
 }
 
+function addName (name) {
+  return knex.raw('insert into "tweet" ("name") values ("' + name + '" );')
+}
 
 function closeDB () {
   knex.destroy()
