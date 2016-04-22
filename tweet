@@ -51,3 +51,7 @@ function addTweet (tweet) {
 function closeDB () {
   knex.destroy()
 }
+
+module.exports = listTweet
+module.exports = getAll
+module.exports = addTweet
