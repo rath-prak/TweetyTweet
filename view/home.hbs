@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+  <head>
+   <title>Soap Box</title>
+  </head>
+
+<body>
+
+  <h1>Welcome to Soap Box</h1>
+  <h2>Just say it</h2>
+  <h3>Welcome {{name}}</h3>
+
+  <form action="/home" method="post">
+    <!--   Username:<br>
+      <input type="text" name="username"><br>
+ -->      Post Comment:<br>
+     <input type="text" name="tweet" ><br>
+     <input type="submit" value="Holla!"><br>
+
+  </form>
+<div>
+{{#each tweet}}
+  <strong>{{this.tweet}}</strong><br>
+  {{this.name}}<br>
+{{/each}}
+</body>
+</html>
+
