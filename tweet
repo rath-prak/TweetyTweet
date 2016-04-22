@@ -45,7 +45,7 @@ function listTweet (tweet) {
 }
 
 function logError (err) {
-  console.log('looks like shes dead jim: ', err)
+  console.log('looks like she is dead jim: ', err)
 }
 function getAll () {
   return knex.raw('select * from "tweet"')
@@ -62,3 +62,7 @@ function addName (name) {
 function closeDB () {
   knex.destroy()
 }
+
+module.exports = getAll
+module.exports = listTweet
+module.exports = addName
