@@ -2,13 +2,15 @@
 <html>
   <head>
    <title>Soap Box</title>
+   <link rel="stylesheet" type="text/css" href="style.css">
   </head>
 
-<body>
 
+<body>
+<div class="container">
   <h1>Welcome to Soap Box</h1>
   <h2>Just say it</h2>
-  <h3>Welcome {{name}}</h3>
+  <h3>Welcome {{this.name}}</h3>
 
   <form action="/home" method="post">
     <!--   Username:<br>
@@ -23,6 +25,8 @@
   <strong>{{this.tweet}}</strong><br>
   {{this.name}}<br>
 {{/each}}
+
+</div>
 </body>
 </html>
 
