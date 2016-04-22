@@ -2,8 +2,26 @@
 <html>
 <head>
 <title>Soap Box</title>
+<link rel="stylesheet" type="text/css" href="style.css">
 </head>
-<body>
+
+<style type="text/css">
+body{
+  background: linear-gradient(#f1e867, #feb745);
+  font-family: sans-serif;
+}
+.container{
+  width: 400px;
+  height: 600px;
+  margin: 0 auto;
+  height: 1000px;
+}
+
+
+</style>
+<div class="container">
+    <h1>Soap box sign up</h1>
+<body class="signup">
        <form method="POST" action="/">
           <fieldset>
             <legend>Please sign up</legend>
@@ -11,7 +29,7 @@
             <div class="form-group">
               <label for="name">Username</label>
               <input class="form-control" type="name" name="name" id="name">
-            </div>
+            </div><br>
 
             <div class="form-group">
               <label for="password">Password</label>
@@ -25,5 +43,6 @@
         </form>
       </div>
     </div>
+  </div>
   </body>
 </html>

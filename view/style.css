@@ -1,0 +1,10 @@
+body{
+  background: linear-gradient(#f1e867, #feb745);
+  font-family: sans-serif;
+}
+.container{
+  width: 400px;
+  height: 600px;
+  margin: 0 auto;
+  height: 1000px;
+}
