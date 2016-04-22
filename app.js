@@ -34,7 +34,7 @@ function addTweet (tweet, username) {
 app.get('/home', function(req, res) { // grab data from database and render onto page
   list()
   .then(function(data){
-   res.render("home", {tweet: data})
+   res.render("home", {name: req.body.name, tweet: data})
  })
 });
 
