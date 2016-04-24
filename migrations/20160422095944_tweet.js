@@ -6,6 +6,7 @@ exports.up = function(knex, Promise) {
     table.string('name')
     table.string('tweet')
     table.string('personId')
+    table.string('password')
   })
 };
 

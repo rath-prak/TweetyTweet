@@ -8,7 +8,7 @@
 
 <body>
 <div class="container">
-  <h1>Welcome to Soap Box</h1>
+  <h1>Welcome to Soap Box..</h1>
   <h2>Just say it</h2>
   <h3>Welcome {{this.name}}</h3>
 
@@ -17,16 +17,19 @@
       <input type="text" name="username"><br>
  -->      Post Comment:<br>
      <input type="text" name="tweet" ><br>
-     <input type="submit" value="Holla!"><br>
+     <input type="submit" value="Holla!"><br><br>
+<a href="/sign-in">time to gett off your Soap Box....</a>
 
   </form>
 <div>
 {{#each tweet}}
-  <strong>{{this.tweet}}</strong><br>
-  {{this.name}}<br>
+ <div id="tweet"> <strong>{{this.tweet}}</strong></div>
+  <div id="name">{{this.name}}</div><br>
 {{/each}}
 
 </div>
+
+<input type="submit" value="sign out" action="/"><br><br>
 </body>
 </html>
 
