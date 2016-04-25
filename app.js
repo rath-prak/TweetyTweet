@@ -6,6 +6,8 @@ var request = require('superagent')
 var knexConfig = require('./knexfile')
 var knex = require('knex')(knexConfig[process.env.NODE_ENV || "development"])
 var bcrypt = require('bcrypt');
+var session = require('express-session')
+
 
 var app = express();
 
@@ -26,10 +28,26 @@ function list(){
 }
 
 function addTweet (tweet, username) {
-  // return knex.raw('insert into "tweet" (tweet, name) values ("' + tweet + '", "'+username+'" );')
-  return knex.raw('insert into "tweet" (tweet, name) values (?,?);', [tweet, username]) //'I'm saving you from sneaky sql injection attacks!'
+  return knex.raw('insert into "tweet" (tweet, name) values ("' + tweet + '", "'+username+'" );')
+  // return knex.raw('insert into "tweet" (tweet, name) values (?,?);', [tweet, username]) //'I'm saving you from sneaky sql injection attacks!'
 }
 
+// app.use(session({
+//   secret: 'ssshhhhhh! Top secret!',
+//   saveUninitialized: true,
+//   resave: true,
+//   db: knex
+// }))
+
+// app.get('/home', function(req, res){
+//   if (req.session.userId){
+//     res.render('/home', { id: req.session.userId }) // return the user to Tweet page
+//   } else {
+//     res.redirect('/sign-in') // else redirect to sign in page
+//   }
+// })
+
+// app.get('/')
 
 app.get('/home', function(req, res) { // grab data from database and render onto page
   list()
