@@ -27,17 +27,19 @@ function list(){
   return knex.raw('SELECT * FROM "tweet"' )
 }
 
+
 function addTweet (tweet, username) {
   return knex.raw('insert into "tweet" (tweet, name) values ("' + tweet + '", "'+username+'" );')
   // return knex.raw('insert into "tweet" (tweet, name) values (?,?);', [tweet, username]) //'I'm saving you from sneaky sql injection attacks!'
 }
 
-// app.use(session({
-//   secret: 'ssshhhhhh! Top secret!',
-//   saveUninitialized: true,
-//   resave: true,
-//   db: knex
-// }))
+app.use(session({
+  secret: 'ssshhhhhh! Top secret!',
+  saveUninitialized: true,
+  resave: true,
+  db: knex
+}))
+
 
 // app.get('/home', function(req, res){
 //   if (req.session.userId){
