@@ -7,10 +7,14 @@ function listTweets(){
   return knex.raw('SELECT * FROM "Tweet"' )
 }
 
-
 function addTweet (tweet, userId) {
   // return knex.raw('insert into "Tweet" (tweet) values ("'+name+'");')
   return knex.raw('insert into "Tweet" (tweet, userId) values (?,?);', [tweet, userId]) //'I'm saving you from sneaky sql injection attacks!'
+}
+
+function userTweet(userId){
+ // return knex.raw('SELECT * from "Users" WHERE "id" =',userId)
+ knex.select().table("Tweet")
 }
 
 
@@ -31,17 +35,15 @@ app.post('/home', function(req, res){
 })
 
 
-
-
-app.get('/:id', function(req, res) {
-
-  console.log("ID:", req.params.id)
-  console.log("username", req.body.name)
-  console.log("tweet", req.params.tweet)
-
-  res.render("user-page", {username: req.session.name})
-  //find all tweets with a user with id of (req.params.id)
+app.get('/:id', function (req, res) {
+  // console.log('req.params: ', req.params)
+  knex('Tweet').where('userId', req.params.id)
+  .then(function(data) {
+    // console.log(data)
+    res.render('user-page', { userId: req.params.id, data: data } )
+  })
 })
+
 
 
 app.get('/', function (req, res) {

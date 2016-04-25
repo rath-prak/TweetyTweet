@@ -8,7 +8,7 @@
 
 <body>
 <div class="container">
-  <h1>Your tweets {{username}} !</h1>
+  <h1>Your tweets {{name}} !</h1>
 
   <form action="/home" method="post">
   Post Comment:<br>
@@ -16,10 +16,11 @@
      <input type="submit" value="Holla!"><br><br>
   </form>
 
-{{#each tweet}}
- <div id="tweet"> <strong>{{this.tweet}}</strong></div>
-  <div id="name">{{this.name}}</div><br>
+{{#each data}}
+  <p> - "{{this.tweet}}"</p>
 {{/each}}
+<br>
+
 
 <a href="/sign-in">time to gett off your Soap Box....</a>
 
