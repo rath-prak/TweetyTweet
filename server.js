@@ -1,29 +1,9 @@
-var express = require('express');
-var path = require('path');
-var bodyParser = require('body-parser'); // check this, I think you only need it if your passing in Json?
-var fs = require('fs');
-var request = require('superagent')
-var knexConfig = require('./knexfile')
-var knex = require('knex')(knexConfig[process.env.NODE_ENV || "development"])
-var bcrypt = require('bcrypt');
-var session = require('express-session')
+var setup = require('./setup.js')
+var app = setup.app
+var knex = setup.knex
+var bcrypt = setup.bcrypt
 
-
-var app = express();
-
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
-
-app.use(express.static(path.join(__dirname, 'view')));
-app.set('views', path.join(__dirname, 'view'));
-app.set('view engine', 'hbs');
-
-//add server
-app.listen(process.env.PORT || 3000, function () {
-  console.log('listening on port 3000!');
-});
-
-function list(){
+function listTweets(){
   return knex.raw('SELECT * FROM "tweet"' )
 }
 
@@ -52,7 +32,7 @@ app.use(session({
 // app.get('/')
 
 app.get('/home', function(req, res) { // grab data from database and render onto page
-  list()
+  listTweets()
   .then(function(data){
    res.render("home", {tweet: data})
  })
