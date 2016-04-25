@@ -8,20 +8,26 @@ function listTweets(){
 }
 
 
-function addTweet (tweet, username) {
-  return knex.raw('insert into "tweet" (tweet, name) values ("' + tweet + '", "'+username+'" );')
+function addTweet (name) {
+  return knex.raw('insert into "Tweet" (tweet) values ("'+tweet+'");')
   // return knex.raw('insert into "tweet" (tweet, name) values (?,?);', [tweet, username]) //'I'm saving you from sneaky sql injection attacks!'
 }
 
-app.use(session({
-  secret: 'ssshhhhhh! Top secret!',
-  saveUninitialized: true,
-  resave: true,
-  db: knex
-}))
+function joinTable(){
+knex('tweet')
+  .join('userSignIn', 'tweet.id', "=", 'personId.id')
+// .join(contact, users.id, =,  contacts.user.id)
+  .select('tweet.id', 'userSignIn.name')
+}
+// app.use(session({
+//   secret: 'ssshhhhhh! Top secret!',
+//   saveUninitialized: true,
+//   resave: true,
+//   db: knex
+// }))
 
 
-// app.get('/home', function(req, res){
+// // app.get('/home', function(req, res){
 //   if (req.session.userId){
 //     res.render('/home', { id: req.session.userId }) // return the user to Tweet page
 //   } else {
@@ -34,7 +40,7 @@ app.use(session({
 app.get('/home', function(req, res) { // grab data from database and render onto page
   listTweets()
   .then(function(data){
-   res.render("home", {tweet: data})
+   res.render("home", {Tweet: data})
  })
 });
 
@@ -53,7 +59,7 @@ app.get('/', function (req, res) {
 app.post('/', function (req, res) {
   var hash = bcrypt.hashSync(req.body.password, 10);
   console.log("name", req.body.name, req.body.password)
-  knex('tweet').insert({name: req.body.name, password: hash}) // Store hash in your password DB.
+  knex('User').insert({name: req.body.name, password: hash}) // Store hash in your password DB.
    .then(function(data){
     // req.session.id = data //try person id
     res.redirect('/home')
@@ -74,7 +80,7 @@ app.get('/sign-in', function (req, res) {
 })
 
 app.post('/sign-in', function (req, res) {
-  knex('tweet').where({name: req.body.name}).select('password')
+  knex('User').where({name: req.body.name}).select('password')
   .then(function(data){
     console.log("returning password from sign in page *******",req.body.password)
     console.log("******** returing hash password",data[0].password)
