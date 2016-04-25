@@ -21,11 +21,16 @@ function userTweet(userId){
 app.get('/')
 
 app.get('/home', function(req, res) { // grab data from database and render onto page
+  console.log("req.session.userId", req.session.userId)
+
   listTweets()
   .then(function(data){
-   res.render("home", {tweet: data})
+   res.render("home", {tweet: data, userId: req.session.userId})
  })
 });
+///////////////////////////
+// ADD TWEET
+///////////////////////////
 
 app.post('/home', function(req, res){
   addTweet(req.body.tweet, req.session.userId) // need to get the session.id
@@ -33,9 +38,11 @@ app.post('/home', function(req, res){
     res.redirect('/home') //'once you've put the data into the db, go back to homepage'
   })
 })
+///////////////////////////
+// VIEW ALL OF USER TWEETS
+///////////////////////////
 
-
-app.get('/:id', function (req, res) {
+app.get('/user/:id', function (req, res) {
   // console.log('req.params: ', req.params)
   knex('Tweet').where('userId', req.params.id)
   .then(function(data) {
@@ -45,18 +52,20 @@ app.get('/:id', function (req, res) {
 })
 
 
-
 app.get('/', function (req, res) {
   res.render('sign-up')
 })
-
+///////////////////////////////////////////////
 // SIGN UP - ENTER PASSWORD FOR THE FIRST TIME
+//////////////////////////////////////////////
+
 app.post('/', function (req, res) {
   var hash = bcrypt.hashSync(req.body.password, 10);
   console.log("name", req.body.name, req.body.password)
   knex('User').insert({name: req.body.name, password: hash}) // Store hash in your password DB.
    .then(function(data){
     // req.session.id = data //try person id
+    req.session.userId = data[0]
     res.redirect('/home')
     console.log("successful", data)
     })
@@ -67,9 +76,9 @@ app.post('/', function (req, res) {
   })
 });
 
-
+//////////////////////////////////////////////
 //SIGN IN - confirm password
-
+/////////////////////////////////////////////
 app.get('/sign-in', function (req, res) {
   res.render('sign-in')
 })
@@ -77,8 +86,6 @@ app.get('/sign-in', function (req, res) {
 app.post('/sign-in', function (req, res) {
   knex('User').where({name: req.body.name}).select('password','id')
   .then(function(data){
-    console.log("returning password from sign in page *******",req.body.password)
-    console.log("******** returing hash password",data[0].password)
     if(bcrypt.compareSync(req.body.password, data[0].password))
     {
       req.session.userId = data[0].id
