@@ -8,3 +8,13 @@ body{
   margin: 0 auto;
   height: 1000px;
 }
+
+#tweet{
+border-radius: 20px;
+background-color: #F1EB9D;
+padding: 10px;
+}
+
+#name{
+margin-left: 10px;
+}

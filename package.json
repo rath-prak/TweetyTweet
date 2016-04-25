@@ -20,8 +20,10 @@
   "homepage": "https://github.com/rath-prak/TweetyTweet#readme",
   "dependencies": {
     "bcrypt": "^0.8.6",
+    "bluebird-chain": "^0.1.0",
     "body-parser": "^1.15.0",
     "express": "^4.13.4",
+    "express-session": "^1.13.0",
     "handlebars": "^4.0.5",
     "hbs": "^4.0.0",
     "knex": "^0.10.0",

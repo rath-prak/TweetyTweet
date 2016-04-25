@@ -59,6 +59,10 @@ function addName (name) {
   return knex.raw('insert into "tweet" ("name") values ("' + name + '" );')
 }
 
+function getPassword (name) {
+  return knex.raw('insert into "tweet" ("name") values ("' + name + '" );')
+}
+
 function closeDB () {
   knex.destroy()
 }
