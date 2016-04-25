@@ -73,8 +73,6 @@ app.get('/sign-in', function (req, res) {
   res.render('sign-in')
 })
 
-
-
 app.post('/sign-in', function (req, res) {
   knex('tweet').where({name: req.body.name}).select('password')
   .then(function(data){
@@ -85,7 +83,7 @@ app.post('/sign-in', function (req, res) {
       res.redirect('/home')
       console.log("successful")
     } else {
-      res.redirect('/sign-in')
+      res.redirect('/')
       console.log("ooopse")
     }
 
