@@ -70,25 +70,6 @@ app.get('/sign-in', function (req, res) {
   res.render('sign-in')
 })
 
-app.post('/sign-in', function (req, res) {
-  //look in req.body for the params sent from the form
-  knex('tweet').where({ name: req.body.name }).then(function(tweet){
-    var authenticatedUser = false
-    users.map(function(user){
-      if (bcrypt.compareSync(req.body.password, user.password_hash)) {
-        authenticatedUser = true
-        req.session.userId = user.id
-      }
-    })
-    if (authenticatedUser){
-      res.redirect('/home')
-    } else {
-      res.redirect('/sign-in')
-      res.send("Incorrent details, please try again")
-    }
-  })
-})
-
 //SIGN IN - confirm password
 
 app.get('/sign-in', function (req, res) {
