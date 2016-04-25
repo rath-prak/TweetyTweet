@@ -1,27 +1,10 @@
-var express = require('express');
-var path = require('path');
-var bodyParser = require('body-parser'); // check this, I think you only need it if your passing in Json?
-var fs = require('fs');
-var request = require('superagent')
-var knexConfig = require('./knexfile')
-var knex = require('knex')(knexConfig[process.env.NODE_ENV || "development"])
-var bcrypt = require('bcrypt');
+var setup = require('./setup.js')
+var app = setup.app
+var knex = setup.knex
+var bcrypt = setup.bcrypt
 
-var app = express();
 
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
-
-app.use(express.static(path.join(__dirname, 'view')));
-app.set('views', path.join(__dirname, 'view'));
-app.set('view engine', 'hbs');
-
-//add server
-app.listen(process.env.PORT || 3000, function () {
-  console.log('listening on port 3000!');
-});
-
-function list(){
+function listTweets(){
   return knex.raw('SELECT * FROM "tweet"' )
 }
 
@@ -32,7 +15,7 @@ function addTweet (tweet, username) {
 
 
 app.get('/home', function(req, res) { // grab data from database and render onto page
-  list()
+  listTweets()
   .then(function(data){
    res.render("home", {tweet: data})
  })
@@ -48,7 +31,6 @@ app.post('/home', function(req, res){
 app.get('/', function (req, res) {
   res.render('sign-up')
 })
-
 
 app.post('/', function (req, res) {
   var hash = bcrypt.hashSync(req.body.password, 10);
