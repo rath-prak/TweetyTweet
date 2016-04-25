@@ -6,7 +6,7 @@ var fs = require('fs');
 var request = require('superagent')
 var knexConfig = require('./knexfile')
 var knex = require('knex')(knexConfig[process.env.NODE_ENV || "development"])
-
+var session = require('express-session')
 
 var app = express();
 
@@ -21,6 +21,13 @@ app.set('view engine', 'hbs');
 app.listen(process.env.PORT || 3000, function () {
   console.log('listening on port 3000!');
 });
+
+//add sessions
+app.use(session({
+  secret: 'keyboard cat', //random string
+  resave: false,
+  saveUninitialized: true
+}))
 
 module.exports = {
   app: app,

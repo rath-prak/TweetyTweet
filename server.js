@@ -4,52 +4,45 @@ var knex = setup.knex
 var bcrypt = setup.bcrypt
 
 function listTweets(){
-  return knex.raw('SELECT * FROM "tweet"' )
+  return knex.raw('SELECT * FROM "Tweet"' )
 }
 
 
-function addTweet (name) {
-  return knex.raw('insert into "Tweet" (tweet) values ("'+tweet+'");')
-  // return knex.raw('insert into "tweet" (tweet, name) values (?,?);', [tweet, username]) //'I'm saving you from sneaky sql injection attacks!'
+function addTweet (tweet, userId) {
+  // return knex.raw('insert into "Tweet" (tweet) values ("'+name+'");')
+  return knex.raw('insert into "Tweet" (tweet, userId) values (?,?);', [tweet, userId]) //'I'm saving you from sneaky sql injection attacks!'
 }
 
-function joinTable(){
-knex('tweet')
-  .join('userSignIn', 'tweet.id', "=", 'personId.id')
-// .join(contact, users.id, =,  contacts.user.id)
-  .select('tweet.id', 'userSignIn.name')
-}
-// app.use(session({
-//   secret: 'ssshhhhhh! Top secret!',
-//   saveUninitialized: true,
-//   resave: true,
-//   db: knex
-// }))
 
-
-// // app.get('/home', function(req, res){
-//   if (req.session.userId){
-//     res.render('/home', { id: req.session.userId }) // return the user to Tweet page
-//   } else {
-//     res.redirect('/sign-in') // else redirect to sign in page
-//   }
-// })
-
-// app.get('/')
+app.get('/')
 
 app.get('/home', function(req, res) { // grab data from database and render onto page
   listTweets()
   .then(function(data){
-   res.render("home", {Tweet: data})
+   res.render("home", {tweet: data})
  })
 });
 
 app.post('/home', function(req, res){
-  addTweet(req.body.tweet, req.body.username)
+  addTweet(req.body.tweet, req.session.userId) // need to get the session.id
   .then(function(data){
     res.redirect('/home') //'once you've put the data into the db, go back to homepage'
   })
 })
+
+
+
+
+app.get('/:id', function(req, res) {
+
+  console.log("ID:", req.params.id)
+  console.log("username", req.body.name)
+  console.log("tweet", req.params.tweet)
+
+  res.render("user-page", {username: req.session.name})
+  //find all tweets with a user with id of (req.params.id)
+})
+
 
 app.get('/', function (req, res) {
   res.render('sign-up')
@@ -80,17 +73,20 @@ app.get('/sign-in', function (req, res) {
 })
 
 app.post('/sign-in', function (req, res) {
-  knex('User').where({name: req.body.name}).select('password')
+  knex('User').where({name: req.body.name}).select('password','id')
   .then(function(data){
     console.log("returning password from sign in page *******",req.body.password)
     console.log("******** returing hash password",data[0].password)
     if(bcrypt.compareSync(req.body.password, data[0].password))
     {
+      req.session.userId = data[0].id
+      console.log(req.session.userId, "req.session.userid")
+
       res.redirect('/home')
       console.log("successful")
     } else {
       res.redirect('/')
-      console.log("ooopse")
+      console.log("ooops")
     }
 
     })
