@@ -13,9 +13,6 @@ function addTweet (tweet, username) {
   // return knex.raw('insert into "tweet" (tweet, name) values (?,?);', [tweet, username]) //'I'm saving you from sneaky sql injection attacks!'
 }
 
-
-
-
 // app.get('/home', function(req, res){
 //   if (req.session.userId){
 //     res.render('/home', { id: req.session.userId }) // return the user to Tweet page
@@ -92,6 +89,16 @@ app.post('/sign-in', function (req, res) {
     res.redirect('/')
   })
 
+})
+
+//Sessions
+
+app.get('/sesh', function(req, res){
+  if (req.body.name){
+    res.send("session!")
+  } else {
+    res.redirect('/')
+  }
 })
 
 
